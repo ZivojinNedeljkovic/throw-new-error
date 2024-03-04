@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import StoreProvider from '@/components/store-provider'
+import { headers } from 'next/headers'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -18,8 +19,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const headersList = headers()
+  const csrfToken = headersList.get('csrfToken')
+  if (csrfToken === null) {
+    throw new Error('CSRF Token not set')
+  }
+
   return (
-    <StoreProvider>
+    <StoreProvider csrfToken={csrfToken}>
       <html lang="en">
         <body className={inter.variable}>{children}</body>
       </html>

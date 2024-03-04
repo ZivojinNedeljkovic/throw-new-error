@@ -1,8 +1,11 @@
+import { securityReducer } from '@/features/security/store/security-slice'
 import { configureStore } from '@reduxjs/toolkit'
 
 export const makeStore = () => {
   return configureStore({
-    reducer: {},
+    reducer: {
+      security: securityReducer,
+    },
   })
 }
 

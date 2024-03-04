@@ -17,19 +17,18 @@ export const config = {
 
 export function middleware(request: NextRequest) {
   const response = NextResponse.next()
+  let csrfToken = request.cookies.get('csrfToken')?.value
 
-  if (request.cookies.get('csrfToken')) {
-    return
+  if (csrfToken === undefined) {
+    csrfToken = uuidv4()
+
+    response.cookies.set({
+      name: 'csrfToken',
+      value: csrfToken,
+      httpOnly: true,
+      secure: true,
+    })
   }
-
-  const csrfToken = uuidv4()
-
-  response.cookies.set({
-    name: 'csrfToken',
-    value: csrfToken,
-    httpOnly: true,
-    secure: true,
-  })
 
   response.headers.append('csrfToken', csrfToken)
 
