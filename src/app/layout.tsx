@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import StoreProvider from '@/components/store-provider'
 import { headers } from 'next/headers'
+import Header from '@/features/layout/components/header'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -28,7 +29,10 @@ export default function RootLayout({
   return (
     <StoreProvider csrfToken={csrfToken}>
       <html lang="en">
-        <body className={inter.variable}>{children}</body>
+        <body className={inter.variable}>
+          <Header />
+          {children}
+        </body>
       </html>
     </StoreProvider>
   )
