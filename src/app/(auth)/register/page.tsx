@@ -1,6 +1,6 @@
 import SignInWithGithub from '@/features/auth/components/sign-in-with-github'
-import EmailAndPasswordSignUpForm from '@/features/auth/components/email-and-password-sign-up-form'
 import React from 'react'
+import Divider from '@/features/auth/components/divider'
 import SignUpForm from '@/features/auth/components/sign-up-form'
 
 function SignUpPage() {
@@ -10,7 +10,11 @@ function SignUpPage() {
         <h1 className="text-2xl font-semibold tracking-tight text-center mb-4">
           Create an account
         </h1>
-        <SignUpForm />
+        <div className="flex flex-col gap-3">
+          <SignUpForm />
+          <Divider />
+          <SignInWithGithub />
+        </div>
       </div>
     </main>
   )
