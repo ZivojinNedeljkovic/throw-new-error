@@ -1,5 +1,7 @@
-import SignUpForm from '@/features/auth/components/sign-up-form'
+import SignInWithGithub from '@/features/auth/components/sign-in-with-github'
+import EmailAndPasswordSignUpForm from '@/features/auth/components/email-and-password-sign-up-form'
 import React from 'react'
+import SignUpForm from '@/features/auth/components/sign-up-form'
 
 function SignUpPage() {
   return (
@@ -9,16 +11,6 @@ function SignUpPage() {
           Create an account
         </h1>
         <SignUpForm />
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
-          </div>
-        </div>
       </div>
     </main>
   )

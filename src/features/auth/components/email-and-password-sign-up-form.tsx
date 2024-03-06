@@ -9,17 +9,6 @@ import { Button } from '@/components/ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ConfirmPasswordField from './confirm-password-field'
 
-const formSchema = z.object({
-  email: z.string().email(),
-  password: z
-    .string()
-    .min(8, 'Must contain at least 8 character(s)')
-    .max(30, 'Must contain at most 30 character(s)'),
-  confirmPassword: z.string(),
-})
-
-type FormSchema = z.infer<typeof formSchema>
-
 function EmailAndPasswordSignUpForm() {
   const form = useForm<FormSchema>({
     defaultValues: {
@@ -37,15 +26,33 @@ function EmailAndPasswordSignUpForm() {
       <form className="flex flex-col gap-4" onSubmit={onSubmit}>
         <EmailField />
         <PasswordField />
-
         <ConfirmPasswordField />
-
-        <Button className="w-full" type="submit">
+        <Button className="w-full mt-1" type="submit">
           Register
         </Button>
       </form>
     </Form>
   )
 }
+
+const formSchema = z
+  .object({
+    email: z.string().email(),
+    password: z
+      .string()
+      .min(8, 'Must contain at least 8 character(s)')
+      .max(30, 'Must contain at most 30 character(s)'),
+    confirmPassword: z.string(),
+  })
+  .refine(
+    ({ password, confirmPassword }) =>
+      confirmPassword.length === 0 || password === confirmPassword,
+    {
+      message: "Passwords don't match.",
+      path: ['confirmPassword'],
+    }
+  )
+
+type FormSchema = z.infer<typeof formSchema>
 
 export default EmailAndPasswordSignUpForm

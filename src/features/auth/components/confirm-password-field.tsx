@@ -1,13 +1,13 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import React from 'react'
 import {
-  FormControl,
-  FormDescription,
+  FormControl, 
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { useFormContext } from 'react-hook-form' 
+import { useFormContext } from 'react-hook-form'
 import { placeholder } from './password-field'
 import InputPassword from '@/components/ui/input-password'
 
@@ -23,11 +23,13 @@ function ConfirmPasswordField({ name = 'confirmPassword' }: Props) {
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Confirm Password</FormLabel>
+          <FormLabel>
+            Confirm Password{' '}
+            <span className="text-emerald-500 ml-1">//optional</span>
+          </FormLabel>
           <FormControl>
             <InputPassword placeholder={placeholder} {...field} />
           </FormControl>
-          <FormDescription>This filed is optional.</FormDescription>
           <FormMessage />
         </FormItem>
       )}

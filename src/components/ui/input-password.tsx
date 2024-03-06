@@ -55,8 +55,8 @@ type ToggleInputTypeProps = {
 function ToggleInputType({ onClick, inputType }: ToggleInputTypeProps) {
   const [Icon, label] =
     inputType === 'password'
-      ? [EyeOpenIcon, 'Show Password']
-      : [EyeClosedIcon, 'Hide Password']
+      ? [EyeOpenIcon, 'Show password']
+      : [EyeClosedIcon, 'Hide password']
 
   return (
     <div className="absolute top-0 right-0">
@@ -70,6 +70,7 @@ function ToggleInputType({ onClick, inputType }: ToggleInputTypeProps) {
             onClick={onClick}
           >
             <Icon />
+            <span className="sr-only">{label}</span>
           </Button>
         </TooltipTrigger>
         <TooltipContent>
