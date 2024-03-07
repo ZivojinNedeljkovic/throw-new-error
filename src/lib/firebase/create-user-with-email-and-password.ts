@@ -11,7 +11,6 @@ async function createUserWithEmailAndPassword(email: string, password: string) {
     password
   )
   await sendEmailVerification(firebaseResult.user)
-  auth.signOut()
   return firebaseResult
 }
 

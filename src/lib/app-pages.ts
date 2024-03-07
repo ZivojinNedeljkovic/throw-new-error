@@ -7,6 +7,7 @@ class AppPageClass {
     name: 'Register',
     href: '/register',
   }
+  verifyEmailPage = '/register/verify-email'
 }
 
 const AppPage = new AppPageClass()
