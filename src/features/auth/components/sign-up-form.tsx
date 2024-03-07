@@ -8,6 +8,10 @@ import PasswordField from './password-field'
 import { Button } from '@/components/ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ConfirmPasswordField from './confirm-password-field'
+import { useAppDispatch } from '@/lib/redux/hooks'
+import { setUserEmail } from '@/features/user/store/user-slice'
+import { useRouter } from 'next/navigation'
+import AppPage from '@/lib/app-pages'
 
 function SignUpForm() {
   const form = useForm<FormSchema>({
@@ -17,13 +21,16 @@ function SignUpForm() {
     resolver: zodResolver(formSchema),
   })
 
+  const dispatch = useAppDispatch()
+  const router = useRouter()
+
   const onSubmit = form.handleSubmit(async ({ email, password }) => {
-    const signUpHandler = (
+    const signUp = (
       await import('@/lib/firebase/create-user-with-email-and-password')
     ).default
 
     try {
-      await signUpHandler(email, password)
+      await signUp(email, password)
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
         form.setError('email', {
@@ -33,6 +40,9 @@ function SignUpForm() {
       }
       return
     }
+
+    dispatch(setUserEmail({ email, emailVerified: false }))
+    router.push(AppPage.verifyEmailPage)
   })
 
   return (
