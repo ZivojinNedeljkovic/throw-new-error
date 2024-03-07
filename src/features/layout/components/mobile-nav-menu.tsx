@@ -16,7 +16,7 @@ import AppLink from '@/components/app-link'
 import AppPage from '@/lib/app-pages'
 
 function MobileNavMenu() {
-  const pageLinks = [AppPage.homePage, AppPage.registerPage]
+  const pageLinks = [AppPage.homePage, AppPage.signIn, AppPage.registerPage]
 
   return (
     <Sheet>

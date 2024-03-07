@@ -7,6 +7,10 @@ class AppPageClass {
     name: 'Register',
     href: '/register',
   }
+  signIn = {
+    name: 'Sign In',
+    href: '/sign-in',
+  }
   verifyEmailPage = '/register/verify-email'
 }
 
