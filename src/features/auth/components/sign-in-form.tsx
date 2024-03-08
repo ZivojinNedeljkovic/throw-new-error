@@ -7,15 +7,23 @@ import EmailField from './email-field'
 import PasswordField from './password-field'
 import { Button } from '@/components/ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
-import ConfirmPasswordField from './confirm-password-field'
+import { useAppDispatch } from '@/lib/redux/hooks'
+import thunkSignInUserWithEmailAndPassword from '@/features/store/thunk-sign-in-user-with-email-and-password'
 
 function SignInForm() {
   const form = useForm<FormSchema>({
-    defaultValues: {},
+    defaultValues: {
+      email: '',
+      password: '',
+    },
     resolver: zodResolver(formSchema),
   })
 
-  const onSubmit = form.handleSubmit(async ({ email, password }) => {})
+  const dispatch = useAppDispatch()
+
+  const onSubmit = form.handleSubmit(async ({ email, password }) => {
+    await dispatch(thunkSignInUserWithEmailAndPassword(email, password))
+  })
 
   return (
     <Form {...form}>

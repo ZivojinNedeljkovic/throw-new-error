@@ -16,6 +16,8 @@ import AppPage from '@/lib/app-pages'
 function SignUpForm() {
   const form = useForm<FormSchema>({
     defaultValues: {
+      email: '',
+      password: '',
       confirmPassword: '',
     },
     resolver: zodResolver(formSchema),
