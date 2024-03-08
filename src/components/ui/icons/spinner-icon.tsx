@@ -1,6 +1,10 @@
+import { cn } from '@/lib/utils'
 import React from 'react'
 
-function SpinnerIcon(props: React.HTMLAttributes<SVGElement>) {
+function SpinnerIcon({
+  className,
+  ...props
+}: React.HTMLAttributes<SVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,6 +17,7 @@ function SpinnerIcon(props: React.HTMLAttributes<SVGElement>) {
       strokeLinecap="round"
       strokeLinejoin="round"
       {...props}
+      className={cn('mr-2 h-4 w-4 animate-spin', className)}
     >
       <path d="M21 12a9 9 0 1 1-6.219-8.56" />
     </svg>

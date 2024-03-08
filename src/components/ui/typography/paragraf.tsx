@@ -6,7 +6,7 @@ import React from 'react'
 const headingVariants = cva('font-sans scroll-m-20 ', {
   variants: {
     variant: {
-      error: 'text-base font-semibold text-destructive tracking-tight mb-4',
+      error: 'text-base text-destructive font-medium mb-4',
     },
   },
 })
