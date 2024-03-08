@@ -28,8 +28,6 @@ function SignInForm() {
   const onSubmit = form.handleSubmit(async ({ email, password }) => {
     setIsLoading(true)
     try {
-      throw new Error('test error')
-
       await dispatch(thunkSignInUserWithEmailAndPassword(email, password))
     } catch (error: any) {
       switch (error.code) {
