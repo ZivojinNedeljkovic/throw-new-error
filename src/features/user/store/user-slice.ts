@@ -34,3 +34,5 @@ export const { setUser, setUserEmail } = userSlice.actions
 export const userReducer = userSlice.reducer
 
 export const selectUserEmail = (state: RootState) => state.user.email
+export const selectIsSignedIn = (state: RootState) => !!state.user.uid
+export const selectProfilePhoto = (state: RootState) => state.user.photoURL

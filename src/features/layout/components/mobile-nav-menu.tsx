@@ -20,7 +20,7 @@ function MobileNavMenu() {
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
+      <SheetTrigger asChild className='md:hidden'>
         <Button variant="outline" size="icon">
           <HamburgerMenuIcon />
           <span className="sr-only ">Open navigation menu</span>
