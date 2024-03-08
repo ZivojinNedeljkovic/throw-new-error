@@ -62,7 +62,7 @@ function SignInForm() {
           </Paragraph>
         )}
         <Button className="w-full mt-1" type="submit" disabled={isLoading}>
-          {isLoading && <SpinnerIcon className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <SpinnerIcon />}
           Sing in
         </Button>
       </form>
