@@ -1,6 +1,6 @@
 'use client'
+import React, { useState } from 'react'
 import { Form } from '@/components/ui/form'
-import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import EmailField from './email-field'
@@ -9,9 +9,10 @@ import { Button } from '@/components/ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ConfirmPasswordField from './confirm-password-field'
 import { useAppDispatch } from '@/lib/redux/hooks'
-import { setUserEmail } from '@/features/user/store/user-slice'
 import { useRouter } from 'next/navigation'
 import AppPage from '@/lib/app-pages'
+import SpinnerIcon from '@/components/ui/icons/spinner-icon'
+import thunkSignUpUserWithEmailAndPassword from '@/features/store/thunk-sign-up-user-with-email-and-password'
 
 function SignUpForm() {
   const form = useForm<FormSchema>({
@@ -23,16 +24,15 @@ function SignUpForm() {
     resolver: zodResolver(formSchema),
   })
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const dispatch = useAppDispatch()
   const router = useRouter()
 
   const onSubmit = form.handleSubmit(async ({ email, password }) => {
-    const signUp = (
-      await import('@/lib/firebase/create-user-with-email-and-password')
-    ).default
-
+    setIsLoading(true)
     try {
-      await signUp(email, password)
+      await dispatch(thunkSignUpUserWithEmailAndPassword(email, password))
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
         form.setError('email', {
@@ -42,8 +42,7 @@ function SignUpForm() {
       }
       return
     }
-
-    dispatch(setUserEmail({ email, emailVerified: false }))
+    setIsLoading(false)
     router.push(AppPage.verifyEmailPage)
   })
 
@@ -53,7 +52,8 @@ function SignUpForm() {
         <EmailField />
         <PasswordField />
         <ConfirmPasswordField />
-        <Button className="w-full mt-1" type="submit">
+        <Button className="w-full mt-1" type="submit" disabled={isLoading}>
+          {isLoading && <SpinnerIcon />}
           Register
         </Button>
       </form>
