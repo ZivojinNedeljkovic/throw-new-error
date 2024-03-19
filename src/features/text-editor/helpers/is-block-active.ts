@@ -1,9 +1,9 @@
 import { type BaseEditor, Editor, Element as SlateElement } from 'slate'
+import { CustomElement } from '../types/custom-element'
 
 const isBlockActive = (
   editor: BaseEditor,
-  format: string,
-  blockType = 'type'
+  callback: (element: CustomElement) => boolean
 ) => {
   const { selection } = editor
   if (!selection) return false
@@ -12,9 +12,7 @@ const isBlockActive = (
     Editor.nodes(editor, {
       at: Editor.unhangRange(editor, selection),
       match: n =>
-        !Editor.isEditor(n) &&
-        SlateElement.isElement(n) && // @ts-ignore
-        n[blockType] === format,
+        !Editor.isEditor(n) && SlateElement.isElement(n) && callback(n),
     })
   )
 
