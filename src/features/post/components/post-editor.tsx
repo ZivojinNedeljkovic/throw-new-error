@@ -10,6 +10,7 @@ import {
   Slate,
   withReact,
 } from 'slate-react'
+import HoveringToolbar from './hovering-toolbar'
 
 function PostEditor() {
   const editor = useMemo(() => withReact(createEditor()), [])
@@ -23,6 +24,8 @@ function PostEditor() {
   )
   return (
     <Slate editor={editor} initialValue={initialValue}>
+        
+      <HoveringToolbar />
       <Editable
         className="p-1 m-1 border focus-visible:outline-none"
         renderElement={renderElement}
