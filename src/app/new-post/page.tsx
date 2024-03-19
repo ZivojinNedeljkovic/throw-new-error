@@ -1,10 +1,10 @@
-import MyEditor from '@/features/text-editor/components/editor'
+import PostEditor from '@/features/post/components/post-editor'
 import React from 'react'
 
 function NewPostPage() {
   return (
     <main>
-      <MyEditor />
+      <PostEditor />
     </main>
   )
 }
