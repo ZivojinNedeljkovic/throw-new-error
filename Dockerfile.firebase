@@ -1,0 +1,5 @@
+FROM node:alpine
+RUN npm install -g firebase-tools
+COPY firebase.json .
+COPY .firebaserc .
+CMD ["firebase", "emulators:start", "--only", "auth"]
