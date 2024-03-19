@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "firebase emulators:start --only auth & next dev",
+    "dev": "next dev",
+    "emulator": "firebase emulators:start --only auth",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
