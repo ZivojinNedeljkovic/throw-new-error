@@ -6,6 +6,7 @@ function usePositionOnSelected() {
   const [top, setTop] = useState(0)
   const [left, setLeft] = useState(0)
   const ref = useRef<HTMLMenuElement | null>(null)
+  const lastSelected = useRef('')
 
   const editor = useSlate()
   const inFocus = useFocused()
@@ -18,6 +19,10 @@ function usePositionOnSelected() {
     !Range.isCollapsed(selection) &&
     Editor.string(editor, selection) !== ''
   )
+
+  if (isTextSelected) {
+    lastSelected.current = Editor.string(editor, selection)
+  }
 
   useEffect(() => {
     const el = ref.current
@@ -38,6 +43,7 @@ function usePositionOnSelected() {
     top,
     ref,
     isTextSelected,
+    lastSelected: lastSelected.current,
   }
 }
 

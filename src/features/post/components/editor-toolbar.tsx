@@ -9,7 +9,11 @@ import {
   TriangleDownIcon,
   UnderlineIcon,
 } from '@radix-ui/react-icons'
-import { Transition, TransitionStatus } from 'react-transition-group'
+import {
+  SwitchTransition,
+  Transition,
+  TransitionStatus,
+} from 'react-transition-group'
 import { cn } from '@/lib/utils'
 import isMarkActive from '@/features/text-editor/helpers/is-mark-active'
 import { useSlate } from 'slate-react'
@@ -39,33 +43,37 @@ function EditorToolbar() {
 }
 
 function HoverToolbar({ children }: { children: ReactNode }) {
-  const { ref, top, left, isTextSelected } = usePositionOnSelected()
+  const { ref, top, left, isTextSelected, lastSelected } =
+    usePositionOnSelected()
 
   return (
     <ClientOnly>
       <Portal.Root>
-        <Transition
-          nodeRef={ref}
-          in={isTextSelected}
-          timeout={{ enter: 450, exit: 150 }}
-          mountOnEnter
-          unmountOnExit
-        >
-          {state => (
-            <div
-              className={cn(
-                'absolute z-10 transition-opacity',
-                transitionStyles[state]
-              )}
-              style={{ top, left }}
-            >
-              <menu ref={ref} className="bg-primary rounded-md flex">
-                {children}
-              </menu>
-              <TriangleDownIcon className="-mt-[6.1px] mx-auto" />
-            </div>
-          )}
-        </Transition>
+        <SwitchTransition>
+          <Transition
+            key={lastSelected}
+            nodeRef={ref}
+            in={isTextSelected}
+            timeout={{ enter: 450, exit: 150 }}
+            mountOnEnter
+            unmountOnExit
+          >
+            {state => (
+              <div
+                className={cn(
+                  'absolute z-10 transition-opacity',
+                  transitionStyles[state]
+                )}
+                style={{ top, left }}
+              >
+                <menu ref={ref} className="bg-primary rounded-md flex">
+                  {children}
+                </menu>
+                <TriangleDownIcon className="-mt-[6.1px] mx-auto" />
+              </div>
+            )}
+          </Transition>
+        </SwitchTransition>
       </Portal.Root>
     </ClientOnly>
   )
