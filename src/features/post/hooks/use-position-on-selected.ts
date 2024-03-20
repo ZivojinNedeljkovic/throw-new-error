@@ -31,7 +31,7 @@ function usePositionOnSelected() {
     if (left < 0) left = 0
     setTop(top)
     setLeft(left)
-  })
+  }, [isTextSelected])
 
   return {
     left,

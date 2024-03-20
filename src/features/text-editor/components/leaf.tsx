@@ -14,9 +14,9 @@ function Leaf({ attributes, children, leaf }: RenderLeafProps) {
     children = <em>{children}</em>
   }
 
-  //   if (leaf.underline) {
-  //     children = <u>{children}</u>
-  //   }
+  if (leaf.underline) {
+    children = <u>{children}</u>
+  }
 
   return <span {...attributes}>{children}</span>
 }

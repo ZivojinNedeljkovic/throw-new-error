@@ -11,6 +11,7 @@ export type CustomText = {
   bold?: boolean
   italic?: boolean
   code?: boolean
+  underline?: boolean
   text: string
 }
 
