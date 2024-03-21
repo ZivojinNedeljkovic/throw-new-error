@@ -1,8 +1,8 @@
-import React, { HTMLAttributes, ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import * as Portal from '@radix-ui/react-portal'
 import ClientOnly from '@/components/client-only'
 import { Button } from '@/components/ui/button'
-import usePositionOnSelected from '../hooks/use-position-on-selected'
+import usePositionOfSelected from '../hooks/use-position-of-selected'
 import {
   FontBoldIcon,
   FontItalicIcon,
@@ -18,13 +18,8 @@ import { cn } from '@/lib/utils'
 import isMarkActive from '@/features/text-editor/helpers/is-mark-active'
 import { useSlate } from 'slate-react'
 import toggleMark from '@/features/text-editor/helpers/toggle-mark'
-
-const transitionStyles: Partial<Record<TransitionStatus, string>> = {
-  entering: 'opacity-100 delay-300',
-  entered: 'opacity-100',
-  exiting: 'opacity-0',
-  exited: 'opacity-0',
-}
+import useIsTextSelected from '../hooks/use-is-text-selected'
+import useSelectedString from '@/features/text-editor/hooks/use-selected-string'
 
 function EditorToolbar() {
   return (
@@ -38,42 +33,53 @@ function EditorToolbar() {
       <MarkToggle mark="underline">
         <UnderlineIcon />
       </MarkToggle>
+      <Button size={'sm'}>T</Button>
     </HoverToolbar>
   )
 }
 
+const transitionStyles: Partial<Record<TransitionStatus, string>> = {
+  entering: 'opacity-100 delay-300',
+  entered: 'opacity-100',
+  exiting: 'opacity-0',
+  exited: 'opacity-0',
+}
+
 function HoverToolbar({ children }: { children: ReactNode }) {
-  const { ref, top, left, isTextSelected, lastSelected } =
-    usePositionOnSelected()
+  const { ref, top, left } = usePositionOfSelected()
+  const isTextSelected = useIsTextSelected()
+  const selectedString = useSelectedString()
+
+  // console.log('isTextSelected', isTextSelected)
 
   return (
     <ClientOnly>
       <Portal.Root>
-        <SwitchTransition>
-          <Transition
-            key={lastSelected}
-            nodeRef={ref}
-            in={isTextSelected}
-            timeout={{ enter: 450, exit: 150 }}
-            mountOnEnter
-            unmountOnExit
-          >
-            {state => (
-              <div
-                className={cn(
-                  'absolute z-10 transition-opacity',
-                  transitionStyles[state]
-                )}
-                style={{ top, left }}
-              >
-                <menu ref={ref} className="bg-primary rounded-md flex">
-                  {children}
-                </menu>
-                <TriangleDownIcon className="-mt-[6.1px] mx-auto" />
-              </div>
-            )}
-          </Transition>
-        </SwitchTransition>
+        <Transition
+          nodeRef={ref}
+          in={isTextSelected}
+          timeout={{ enter: 450, exit: 150 }}
+          mountOnEnter
+          unmountOnExit
+        >
+          {state => (
+            <SwitchTransition>
+              <Transition key={selectedString} nodeRef={ref} timeout={150}>
+                <div
+                  ref={ref}
+                  className={cn(
+                    'absolute z-10 transition-opacity',
+                    transitionStyles[state]
+                  )}
+                  style={{ top, left }}
+                >
+                  <menu className="bg-primary rounded-md flex">{children}</menu>
+                  <TriangleDownIcon className="-mt-[6.1px] mx-auto" />
+                </div>
+              </Transition>
+            </SwitchTransition>
+          )}
+        </Transition>
       </Portal.Root>
     </ClientOnly>
   )

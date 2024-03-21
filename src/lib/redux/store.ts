@@ -1,3 +1,4 @@
+import { postEditorReducer } from '@/features/post/store/editor-slice'
 import { securityReducer } from '@/features/security/store/security-slice'
 import { userReducer } from '@/features/user/store/user-slice'
 import {
@@ -11,6 +12,7 @@ export const makeStore = () => {
     reducer: {
       security: securityReducer,
       user: userReducer,
+      postEditor: postEditorReducer,
     },
   })
 }

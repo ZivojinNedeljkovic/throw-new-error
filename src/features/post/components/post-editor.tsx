@@ -1,7 +1,7 @@
 'use client'
 import EditorElement from '@/features/text-editor/components/editor-element'
 import Leaf from '@/features/text-editor/components/leaf'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { type Descendant, createEditor } from 'slate'
 import {
   Editable,
@@ -11,6 +11,8 @@ import {
   withReact,
 } from 'slate-react'
 import EditorToolbar from './editor-toolbar'
+import { useAppDispatch } from '@/lib/redux/hooks'
+import { setIsSelectionOver } from '../store/editor-slice'
 
 function PostEditor() {
   const editor = useMemo(() => withReact(createEditor()), [])
@@ -22,6 +24,10 @@ function PostEditor() {
     (props: RenderLeafProps) => <Leaf {...props} />,
     []
   )
+  const dispatch = useAppDispatch()
+
+  useMouseUpHandler()
+
   return (
     <Slate editor={editor} initialValue={initialValue}>
       <EditorToolbar />
@@ -30,6 +36,9 @@ function PostEditor() {
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder="Write your post..."
+        onMouseDown={e => {
+          dispatch(setIsSelectionOver(false))
+        }}
         // renderPlaceholder={({ children, attributes }) => (
         //   <div {...attributes}>
         //     <p>{children}</p>
@@ -56,5 +65,17 @@ const initialValue: Descendant[] = [
     ],
   },
 ]
+
+function useMouseUpHandler() {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    const handelMouseUp = () => dispatch(setIsSelectionOver(true))
+    document.addEventListener('mouseup', handelMouseUp)
+    return () => {
+      document.removeEventListener('mouseup', handelMouseUp)
+    }
+  }, [dispatch])
+}
 
 export default PostEditor
