@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import * as Portal from '@radix-ui/react-portal'
 import ClientOnly from '@/components/client-only'
 import { Button } from '@/components/ui/button'
-import usePositionOfSelected from '../hooks/use-position-of-selected'
+import useEditorToolbarPosition from '../hooks/use-editor-toolbar-position'
 import {
   FontBoldIcon,
   FontItalicIcon,
@@ -46,7 +46,7 @@ const transitionStyles: Partial<Record<TransitionStatus, string>> = {
 }
 
 function HoverToolbar({ children }: { children: ReactNode }) {
-  const { ref, top, left } = usePositionOfSelected()
+  const { ref, top, left, arrowLeftOffset } = useEditorToolbarPosition()
   const isTextSelected = useIsTextSelected()
   const selectedString = useSelectedString()
 
@@ -74,7 +74,10 @@ function HoverToolbar({ children }: { children: ReactNode }) {
                   style={{ top, left }}
                 >
                   <menu className="bg-primary rounded-md flex">{children}</menu>
-                  <TriangleDownIcon className="-mt-[6.1px] mx-auto" />
+                  <TriangleDownIcon
+                    className="-mt-[6.1px] mx-auto"
+                    style={{ transform: `translateX(${arrowLeftOffset}px)` }}
+                  />
                 </div>
               </Transition>
             </SwitchTransition>
