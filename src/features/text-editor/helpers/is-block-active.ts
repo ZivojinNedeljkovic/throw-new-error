@@ -3,7 +3,7 @@ import { CustomElement } from '../types/custom-element'
 
 const isBlockActive = (
   editor: BaseEditor,
-  callback: (element: CustomElement) => boolean
+  findElement: (element: CustomElement) => boolean
 ) => {
   const { selection } = editor
   if (!selection) return false
@@ -12,7 +12,7 @@ const isBlockActive = (
     Editor.nodes(editor, {
       at: Editor.unhangRange(editor, selection),
       match: n =>
-        !Editor.isEditor(n) && SlateElement.isElement(n) && callback(n),
+        !Editor.isEditor(n) && SlateElement.isElement(n) && findElement(n),
     })
   )
 
