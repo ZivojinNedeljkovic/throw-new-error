@@ -7,7 +7,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { useFormContext } from 'react-hook-form'
-import { Input } from '@/components/ui/input'
 import InputPassword from '@/components/ui/input-password'
 
 type Props = {

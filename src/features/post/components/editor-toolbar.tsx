@@ -4,6 +4,7 @@ import ClientOnly from '@/components/client-only'
 import { Button } from '@/components/ui/button'
 import useEditorToolbarPosition from '../hooks/use-editor-toolbar-position'
 import {
+  ArrowLeftIcon,
   FontBoldIcon,
   FontItalicIcon,
   HeadingIcon,
@@ -23,6 +24,7 @@ import useIsTextSelected from '../hooks/use-is-text-selected'
 import useSelectedString from '@/features/text-editor/hooks/use-selected-string'
 import isBlockActive from '@/features/text-editor/helpers/is-block-active'
 import { mergeRefs } from 'react-merge-refs'
+import toggleHeading from '@/features/text-editor/helpers/toggle-heading'
 
 type MenuType = 'main' | 'heading'
 
@@ -41,20 +43,38 @@ function HeadingMenu({
 }: {
   onChangeMenu: (menuType: MenuType) => void
 }) {
+  const editor = useSlate()
+  const [key, setKey] = useState(0)
   return (
-    <HoverToolbar>
-      <BlockToggle
-        findElement={el => el.type === 'heading'}
-        onMouseDown={() => onChangeMenu('main')}
+    <HoverToolbar key={key} onExited={() => onChangeMenu('main')}>
+      <TooltipButton
+        active={false}
+        className="p-2"
+        onMouseDown={e => {
+          e.preventDefault()
+          onChangeMenu('main')
+        }}
       >
-        <HeadingIcon />
-      </BlockToggle>
-      <MarkToggle mark="bold">
-        <HeadingIcon />
-      </MarkToggle>
-      <MarkToggle mark="italic">
-        <HeadingIcon />
-      </MarkToggle>
+        <ArrowLeftIcon />
+      </TooltipButton>
+      {[1, 2, 3].map(headingNumber => (
+        <TooltipButton
+          key={headingNumber}
+          className="font-light"
+          active={isBlockActive(
+            editor,
+            el => el.type === 'heading' && el.number === headingNumber
+          )}
+          onMouseDown={e => {
+            e.preventDefault()
+            //@ts-ignore
+            toggleHeading(editor, headingNumber)
+            setKey(prev => prev + 1)
+          }}
+        >
+          H{headingNumber}
+        </TooltipButton>
+      ))}
     </HoverToolbar>
   )
 }
@@ -92,7 +112,15 @@ const transitionStyles: Partial<Record<TransitionStatus, string>> = {
   exited: 'opacity-0',
 }
 
-function HoverToolbar({ children }: { children: ReactNode }) {
+function HoverToolbar({
+  children,
+  animate = true,
+  onExited,
+}: {
+  children: ReactNode
+  animate?: boolean
+  onExited?: () => void
+}) {
   const { measureRef, top, left, arrowLeftOffset } = useEditorToolbarPosition()
   const ref = useRef<HTMLDivElement | null>(null)
   const isTextSelected = useIsTextSelected()
@@ -108,19 +136,16 @@ function HoverToolbar({ children }: { children: ReactNode }) {
           mountOnEnter
           unmountOnExit
           appear
+          onExited={onExited}
         >
           {state => (
             <SwitchTransition>
-              <Transition
-                key={selectedString}
-                nodeRef={ref}
-                timeout={450}
-              >
+              <Transition key={selectedString} nodeRef={ref} timeout={450}>
                 <div
                   ref={mergeRefs([ref, measureRef])}
                   className={cn(
                     'absolute z-10 transition-opacity duration-300',
-                    transitionStyles[state]
+                    animate && transitionStyles[state]
                   )}
                   style={{ top, left }}
                 >
@@ -148,6 +173,7 @@ function TooltipButton({
 }) {
   return (
     <Button
+      size="sm"
       {...props}
       className={cn('opacity-50', className, active && 'opacity-100')}
     />

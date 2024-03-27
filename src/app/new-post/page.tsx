@@ -1,10 +1,10 @@
-import PostEditor from '@/features/post/components/post-editor'
+import NewPostForm from '@/features/post/components/new-post-form'
 import React from 'react'
 
 function NewPostPage() {
   return (
-    <main>
-      <PostEditor />
+    <main className="">
+      <NewPostForm />
     </main>
   )
 }

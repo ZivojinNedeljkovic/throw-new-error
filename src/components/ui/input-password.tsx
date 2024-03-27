@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { Input } from './input'
 import { Button } from './button'
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
-import mergeRefs from 'merge-refs'
+import { mergeRefs } from 'react-merge-refs'
 import {
   TooltipProvider,
   TooltipTrigger,
@@ -33,7 +33,7 @@ const InputPassword = React.forwardRef<HTMLInputElement, InputProps>(
         <div className="relative">
           <Input
             {...props}
-            ref={mergeRefs(forwardRef, inputRef)}
+            ref={mergeRefs([forwardRef, inputRef])}
             className={cn('pr-14', className)}
             type={inputType}
             data-testid="inputPassword"

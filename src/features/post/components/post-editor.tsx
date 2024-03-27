@@ -32,7 +32,7 @@ function PostEditor() {
     <Slate editor={editor} initialValue={initialValue}>
       <EditorToolbar />
       <Editable
-        className="p-1 m-1 border focus-visible:outline-none"
+        className="p-1 m-1 border focus-visible:outline-none rounded-md"
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         placeholder="Write your post..."
@@ -60,7 +60,7 @@ const initialValue: Descendant[] = [
     type: 'paragraph',
     children: [
       {
-        text: `Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic provident iure praesentium quidem, in nostrum natus aspernatur necessitatibus minus voluptatibus recusandae aperiam qui voluptatem fugit ut quasi incidunt id facere.`,
+        text: '',
       },
     ],
   },

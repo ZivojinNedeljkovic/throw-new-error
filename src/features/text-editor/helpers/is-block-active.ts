@@ -1,4 +1,4 @@
-import { type BaseEditor, Editor, Element as SlateElement } from 'slate'
+import { type BaseEditor, Editor, Element } from 'slate'
 import { CustomElement } from '../types/custom-element'
 
 const isBlockActive = (
@@ -11,10 +11,10 @@ const isBlockActive = (
   const [match] = Array.from(
     Editor.nodes(editor, {
       at: Editor.unhangRange(editor, selection),
-      match: n =>
-        !Editor.isEditor(n) && SlateElement.isElement(n) && findElement(n),
+      match: n => !Editor.isEditor(n) && Element.isElement(n) && findElement(n),
     })
   )
+
 
   return !!match
 }
